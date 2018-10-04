@@ -52,7 +52,37 @@ keywords = (
 )
 
 tokens = keywords + (
-
+    'COMMA', 'INTEGER', 'FLOAT', 'STRING',
+    'ID', 'NEWLINE'
 )
+
+t_ignore = ' \t'
+
+
+t_COMMA = r'\,'
+t_INTEGER = r'\d+'
+t_FLOAT = r'((\d*\.\d+)(E[\+-]?\d+)?|([1-9]\d*E[\+-]?\d+))'
+t_STRING = r'\".*?\"'
+
+
+def t_ID(t):
+    """[A-Z][A-Z0-9]"""
+    if t.value in keywords:
+        t.type = t.value
+    return t
+
+
+def t_NEWLINE(t):
+    """\n"""
+    t.lexer.lineno += 1
+    return t
+
+
+def t_error(t):
+    print("Illegal character", t.value[0])
+    t.lexer.skip(1)
+
+
+lex.lex()
 
 
