@@ -57,7 +57,8 @@ keywords = (
     'TIL',              # loop until
     'WILE',             # loop while
     'MAEK',             # cast
-    'IS'                # cast
+    'IS',               # cast
+    'NOW'               # cast
 )
 
 tokens = keywords + (
