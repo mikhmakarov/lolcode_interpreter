@@ -22,6 +22,7 @@ ANY = '<ANY>'
 SAME = '<SAME>'
 DIFFRINT = '<DIFFRINT>'
 SMOOSH = '<SMOOSH>'
+MAEK = '<MAEK>'
 
 
 def p_program(p):
@@ -85,6 +86,14 @@ def p_sep_args(p):
 
         if p[3]:
             p[0].append(p[3])
+
+
+def p_type(p):
+    '''type : YARN
+            | NUMBR
+            | NUMBAR
+            | NOOB'''
+    p[0] = p[1]
 
 
 def p_call_visible_newline(p):
@@ -203,6 +212,15 @@ def p_expr_concat(p):
     '''expr : SMOOSH sep_args MKAY
             | SMOOSH args MKAY'''
     p[0] = (SMOOSH, p[2])
+
+
+def p_expr_cast(p):
+    '''expr : MAEK expr A type
+            | MAEK expr type'''
+    if len(p) == 5:
+        p[0] = (MAEK, [p[2], p[4]])
+    else:
+        p[0] = (MAEK, [p[2], p[3]])
 
 
 def p_variable(p):
