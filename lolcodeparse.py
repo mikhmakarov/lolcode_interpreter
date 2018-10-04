@@ -19,6 +19,8 @@ WON = '<WON>'
 NOT = '<NOT>'
 ALL = '<ALL>'
 ANY = '<ANY>'
+SAME = '<SAME>'
+DIFFRINT = '<DIFFRINT>'
 
 
 def p_program(p):
@@ -132,7 +134,6 @@ def p_expr_math(p):
             | MOD OF expr AN expr
             | BIGGR OF expr AN expr
             | SMALLR OF expr AN expr'''
-    op = None
     if p[1] == 'SUM':
         op = SUM
     elif p[1] == 'DIFF':
@@ -184,6 +185,16 @@ def p_expr_logic(p):
         print('unknown logic operator', p[1])
         p.parser.error = 1
         return
+
+
+def p_expr_comp(p):
+    '''expr : BOTH SAEM expr AN expr
+            | DIFFRINT expr AN expr'''
+    if p[1] == 'BOTH':
+        p[0] = (SAME, [p[3], p[5]])
+    else:
+        p[0] = (DIFFRINT, [p[2], p[4]])
+
 
 
 def p_variable(p):
