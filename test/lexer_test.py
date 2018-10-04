@@ -1,6 +1,6 @@
 import unittest
 
-from basiclex import lexer
+from lolcodelex import lexer
 
 
 class LexerTest(unittest.TestCase):
