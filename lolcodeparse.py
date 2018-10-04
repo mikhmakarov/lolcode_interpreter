@@ -26,6 +26,11 @@ MAEK = '<MAEK>'
 CAST = '<CAST>'
 DECLARE = '<DECLARE>'
 ASSIGN = '<ASSIGN>'
+IF_ELSE = '<IF_ELSE>'
+YARN = '<YARN>'
+TROOF = '<TROOF>'
+NUMBR = '<NUMBR>'
+NUMBAR = '<NUMBAR>'
 
 
 def p_program(p):
@@ -58,8 +63,44 @@ def p_command(p):
                | expr
                | call
                | cast
-               | decl'''
+               | decl
+               | assign
+               | if_else'''
     p[0] = p[1]
+
+
+def p_command_if_else(p):
+    '''if_else : expr NEWLINE O RLY QUESTION NEWLINE YA RLY NEWLINE statements NO WAI NEWLINE statements OIC'''
+    p[0] = (IF_ELSE, p[1], p[10], None, p[14])
+
+
+def p_command_if_else_short(p):
+    '''if_else : expr NEWLINE O RLY QUESTION NEWLINE YA RLY NEWLINE statements OIC'''
+    p[0] = (IF_ELSE, p[1], p[10], None, None)
+
+
+def p_command_if_else_extended(p):
+    '''if_else : expr NEWLINE O RLY QUESTION NEWLINE YA RLY NEWLINE statements elifs NO WAI NEWLINE statements OIC'''
+    p[0] = (IF_ELSE, p[1], p[10], p[11], p[15])
+
+
+def p_command_elifs(p):
+    '''elifs : elifs elif
+             | elif'''
+    if len(p) == 2:
+        p[0] = []
+        if p[1]:
+            p[0].append(p[1])
+    else:
+        p[0] = p[1] if p[1] else []
+
+        if p[2]:
+            p[0].append(p[2])
+
+
+def p_command_elif(p):
+    '''elif : MEBBE expr NEWLINE statements'''
+    p[0] = (p[2], p[4])
 
 
 def p_command_decl(p):
@@ -70,6 +111,10 @@ def p_command_decl(p):
     else:
         p[0] = (DECLARE, [p[4], p[6]])
 
+
+def p_command_assign(p):
+    '''assign : variable R expr'''
+    p[0] = (ASSIGN, [p[1], p[3]])
 
 
 def p_command_cast(p):
@@ -152,12 +197,17 @@ def p_call_visible_newline(p):
 
 
 def p_call_gimmeh(p):
-    '''expr : GIMMEH variable'''
+    '''call : GIMMEH variable'''
     p[0] = (GIMMEH, p[2])
 
 
 def p_expr_value(p):
     '''expr : value'''
+    p[0] = p[1]
+
+
+def p_exprt_var(p):
+    '''expr : variable'''
     p[0] = p[1]
 
 
