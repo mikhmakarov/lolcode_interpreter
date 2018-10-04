@@ -65,7 +65,11 @@ def p_command(p):
 def p_command_decl(p):
     '''decl : I HAS A variable
             | I HAS A variable ITZ value'''
-    p[0] = (DECLARE, )
+    if len(p) == 5:
+        p[0] = (DECLARE, [p[4], None])
+    else:
+        p[0] = (DECLARE, [p[4], p[6]])
+
 
 
 def p_command_cast(p):
@@ -127,6 +131,19 @@ def p_value_int(p):
     p[0] = int(p[1])
 
 
+def p_value_bool(p):
+    '''value : WIN
+             | FAIL'''
+    if p[1] == 'WIN':
+        p[0] = True
+    elif p[1] == 'FAIL':
+        p[0] = False
+    else:
+        print('unknown bool value', p[1])
+        p.parser.error = 1
+        return
+
+
 def p_call_visible_newline(p):
     '''call : VISIBLE args
             | VISIBLE args EXCLAMATION'''
@@ -142,19 +159,6 @@ def p_call_gimmeh(p):
 def p_expr_value(p):
     '''expr : value'''
     p[0] = p[1]
-
-
-def p_expr_bool(p):
-    '''expr : WIN
-            | FAIL'''
-    if p[1] == 'WIN':
-        p[0] = True
-    elif p[1] == 'FAIL':
-        p[0] = False
-    else:
-        print('unknown bool value', p[1])
-        p.parser.error = 1
-        return
 
 
 def p_expr_math(p):
