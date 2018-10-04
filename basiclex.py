@@ -1,7 +1,7 @@
 from ply import *
 
 keywords = (
-    'BTW'               # one line comment
+    'BTW',              # one line comment
     'OBTW',             # multi line comment start
     'TLDR',             # multi line comment end
     'HAI',              # program start
@@ -65,7 +65,7 @@ keywords = (
 
 tokens = keywords + (
     'QUESTION', 'EXCLAMATION', 'COMMA', 'INTEGER', 'FLOAT', 'STRING',
-    'ID', 'NEWLINE'
+    'ID', 'NEWLINE', 'ELLIPSIS'
 )
 
 t_ignore = ' \t'
@@ -77,6 +77,7 @@ t_COMMA = r'\,'
 t_INTEGER = r'\d+'
 t_FLOAT = r'((\d*\.\d+)(E[\+-]?\d+)?|([1-9]\d*E[\+-]?\d+))'
 t_STRING = r'\".*\"'
+t_ELLIPSIS = r'\.\.\.'
 
 
 def t_ID(t):
