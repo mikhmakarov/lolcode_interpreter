@@ -24,6 +24,8 @@ DIFFRINT = '<DIFFRINT>'
 SMOOSH = '<SMOOSH>'
 MAEK = '<MAEK>'
 CAST = '<CAST>'
+DECLARE = '<DECLARE>'
+ASSIGN = '<ASSIGN>'
 
 
 def p_program(p):
@@ -51,22 +53,23 @@ def p_statement(p):
     p[0] = p[1]
 
 
-def p_command_empty(p):
-    '''command : empty'''
-
-
-def p_command_expr(p):
-    '''command : expr'''
+def p_command(p):
+    '''command : empty
+               | expr
+               | call
+               | cast
+               | decl'''
     p[0] = p[1]
 
 
-def p_command_call(p):
-    '''command : call'''
-    p[0] = p[1]
+def p_command_decl(p):
+    '''decl : I HAS A variable
+            | I HAS A variable ITZ value'''
+    p[0] = (DECLARE, )
 
 
 def p_command_cast(p):
-    '''expr : variable IS NOW A type
+    '''cast : variable IS NOW A type
             | variable R MAEK variable A type
             | variable R MAEK variable type'''
     if p[2] == 'IS':
@@ -109,6 +112,21 @@ def p_type(p):
     p[0] = p[1]
 
 
+def p_value_string(p):
+    '''value : STRING'''
+    p[0] = p[1][1:-1]
+
+
+def p_value_float(p):
+    '''value : FLOAT'''
+    p[0] = float(p[1])
+
+
+def p_value_int(p):
+    '''value : INTEGER'''
+    p[0] = int(p[1])
+
+
 def p_call_visible_newline(p):
     '''call : VISIBLE args
             | VISIBLE args EXCLAMATION'''
@@ -121,19 +139,9 @@ def p_call_gimmeh(p):
     p[0] = (GIMMEH, p[2])
 
 
-def p_expr_string(p):
-    '''expr : STRING'''
-    p[0] = p[1][1:-1]
-
-
-def p_expr_float(p):
-    '''expr : FLOAT'''
-    p[0] = float(p[1])
-
-
-def p_expr_int(p):
-    '''expr : INTEGER'''
-    p[0] = int(p[1])
+def p_expr_value(p):
+    '''expr : value'''
+    p[0] = p[1]
 
 
 def p_expr_bool(p):
