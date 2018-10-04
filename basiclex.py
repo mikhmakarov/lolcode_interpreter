@@ -6,7 +6,9 @@ keywords = (
     'TLDR',             # multi line comment end
     'HAI',              # program start
     'KTHXBYE',          # program end
-    'I HAS A',          # assignment
+    'I',                # assignment
+    'HAS',              # assignment
+    'A',                # assignment
     'ITZ',              # assignment
     'R',                # assignment
     'YARN',             # string type
@@ -35,45 +37,50 @@ keywords = (
     'SMOOSH',           # string concatenation
     'VISIBLE',          # print
     'GIMMEH',           # input
-    'O RLY?',           # if
-    'YA RLY',           # then
-    'NO WAI',           # else
+    'O',                # if
+    'RLY',              # if
+    'YA',               # then
+    'NO',               # else
+    'WAI',              # else
     'OIC',              # if end
     'MEBBE',            # elseif
-    'WTF?',             # switch
+    'WTF',              # switch
     'OMG',              # case
     'OMGWTF',           # default
     'GTFO',             # break
-    'IM IN YR',         # for loop
-    'IM OUTTA YR',      # for loop end
-    'YR',               # loop iterator
+    'IM',               # loop
+    'IN',               # loop
+    'YR',               # loop
+    'OUTTA',            # loop end
     'TIL',              # loop until
     'WILE'              # loop while
 )
 
 tokens = keywords + (
-    'COMMA', 'INTEGER', 'FLOAT', 'STRING',
+    'QUESTION', 'EXCLAMATION', 'COMMA', 'INTEGER', 'FLOAT', 'STRING',
     'ID', 'NEWLINE'
 )
 
 t_ignore = ' \t'
 
 
+t_QUESTION = r'\?'
+t_EXCLAMATION = r'!'
 t_COMMA = r'\,'
 t_INTEGER = r'\d+'
 t_FLOAT = r'((\d*\.\d+)(E[\+-]?\d+)?|([1-9]\d*E[\+-]?\d+))'
-t_STRING = r'\".*?\"'
+t_STRING = r'\".*\"'
 
 
 def t_ID(t):
-    """[A-Z][A-Z0-9]"""
+    r'[A-Z][A-Z0-9]*'
     if t.value in keywords:
         t.type = t.value
     return t
 
 
 def t_NEWLINE(t):
-    """\n"""
+    r'\n'
     t.lexer.lineno += 1
     return t
 
