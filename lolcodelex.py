@@ -58,7 +58,8 @@ keywords = (
     'WILE',             # loop while
     'MAEK',             # cast
     'IS',               # cast
-    'NOW'               # cast
+    'NOW',              # cast
+    'IT'                # special variable
 )
 
 tokens = keywords + (
