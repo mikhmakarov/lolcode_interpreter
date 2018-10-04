@@ -26,6 +26,18 @@ class LexerTest(unittest.TestCase):
             assert tokens[0].type == 'HAI'
             assert tokens[-1].type == 'KTHXBYE'
 
+    def test_loops(self):
+        with open('programs/loops') as f:
+            prog = f.read()
+            tokens = self.collect_tokens(prog)
+
+            assert len(tokens) == 31
+            assert tokens[5].type == 'YR'
+            assert tokens[6].type == 'ID'
+            assert tokens[7].type == 'UPPIN'
+            assert tokens[10].type == 'TIL'
+            assert tokens[20].type == 'AN'
+
 
 if __name__ == '__main__':
     unittest.main()
