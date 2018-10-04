@@ -58,7 +58,9 @@ keywords = (
     'NERFIN',           # loop decrement
     'OUTTA',            # loop end
     'TIL',              # loop until
-    'WILE'              # loop while
+    'WILE',             # loop while
+    'MAEK',             # cast
+    'IS'                # cast
 )
 
 tokens = keywords + (
