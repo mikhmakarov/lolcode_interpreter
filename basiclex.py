@@ -83,6 +83,6 @@ def t_error(t):
     t.lexer.skip(1)
 
 
-lex.lex()
+lexer = lex.lex()
 
 
