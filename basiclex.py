@@ -34,6 +34,9 @@ keywords = (
     'NOT',              # logical not
     'ANY',              # true if any of args are true
     'ALL',              # true if all args are true
+    'SAEM',             # equality
+    'DIFFRINT',         # inequality
+    'AN',               # args separation
     'SMOOSH',           # string concatenation
     'VISIBLE',          # print
     'GIMMEH',           # input
@@ -51,6 +54,8 @@ keywords = (
     'IM',               # loop
     'IN',               # loop
     'YR',               # loop
+    'UPPIN',            # loop increment
+    'NERFIN',           # loop decrement
     'OUTTA',            # loop end
     'TIL',              # loop until
     'WILE'              # loop while
@@ -73,7 +78,7 @@ t_STRING = r'\".*\"'
 
 
 def t_ID(t):
-    r'[A-Z][A-Z0-9]*'
+    r'[a-zA-Z][a-zA-Z0-9_]*'
     if t.value in keywords:
         t.type = t.value
     return t
