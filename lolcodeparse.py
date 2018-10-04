@@ -21,6 +21,7 @@ ALL = '<ALL>'
 ANY = '<ANY>'
 SAME = '<SAME>'
 DIFFRINT = '<DIFFRINT>'
+SMOOSH = '<SMOOSH>'
 
 
 def p_program(p):
@@ -162,7 +163,9 @@ def p_expr_logic(p):
             | WON OF expr AN expr
             | NOT expr
             | ALL OF sep_args MKAY
-            | ANY OF sep_args MKAY'''
+            | ANY OF sep_args MKAY
+            | ALL OF args MKAY
+            | ANY OF args MKAY'''
     if p[1] == 'BOTH':
         op = BOTH
         p[0] = (op, [p[3], p[5]])
@@ -196,6 +199,11 @@ def p_expr_comp(p):
         p[0] = (DIFFRINT, [p[2], p[4]])
 
 
+def p_expr_concat(p):
+    '''expr : SMOOSH sep_args MKAY
+            | SMOOSH args MKAY'''
+    p[0] = (SMOOSH, p[2])
+
 
 def p_variable(p):
     '''variable : ID'''
@@ -206,6 +214,7 @@ def p_program_error(p):
     '''program : error'''
     p[0] = None
     p.parser.error = 1
+    raise Exception('wrong input')
 
 
 # Empty
