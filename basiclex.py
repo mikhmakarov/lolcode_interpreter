@@ -1,9 +1,6 @@
 from ply import *
 
 keywords = (
-    'BTW',              # one line comment
-    'OBTW',             # multi line comment start
-    'TLDR',             # multi line comment end
     'HAI',              # program start
     'KTHXBYE',          # program end
     'I',                # assignment
@@ -68,7 +65,7 @@ tokens = keywords + (
     'ID', 'NEWLINE', 'ELLIPSIS'
 )
 
-t_ignore = ' \t'
+t_ignore = ' \t\n'
 
 
 t_QUESTION = r'\?'
@@ -80,16 +77,26 @@ t_STRING = r'\".*\"'
 t_ELLIPSIS = r'\.\.\.'
 
 
-def t_ID(t):
-    r'[a-zA-Z][a-zA-Z0-9_]*'
-    if t.value in keywords:
-        t.type = t.value
-    return t
-
-
 def t_NEWLINE(t):
     r'\n'
     t.lexer.lineno += 1
+    return t
+
+
+def t_oneline_comment(t):
+    r'BTW .*(\n|\Z)'
+    t.lineno += 1
+
+
+def t_multiline_comment(t):
+    r'OBTW(.|\n)*TLDR'
+    t.lineno += t.value.count('\n')
+
+
+def t_ID(t):
+    r'[a-zA-Z][a-zA-Z0-9_]*'
+    if t.value.upper() in keywords:
+        t.type = t.value
     return t
 
 
