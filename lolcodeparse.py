@@ -13,7 +13,12 @@ QUOSHUNT = '<QUOSHUNT>'
 MOD = '<MOD>'
 BIGGR = '<BIGGR>'
 SMALLR = '<SMALLR>'
-
+BOTH = '<BOTH>'
+EITHER = '<EITHER>'
+WON = '<WON>'
+NOT = '<NOT>'
+ALL = '<ALL>'
+ANY = '<ANY>'
 
 
 def p_program(p):
@@ -67,6 +72,18 @@ def p_args(p):
             p[0].append(p[2])
 
 
+def p_sep_args(p):
+    '''sep_args : sep_args AN expr
+            | expr'''
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        p[0] = p[1] if p[1] else []
+
+        if p[3]:
+            p[0].append(p[3])
+
+
 def p_call_visible_newline(p):
     '''call : VISIBLE args
             | VISIBLE args EXCLAMATION'''
@@ -92,6 +109,19 @@ def p_expr_float(p):
 def p_expr_int(p):
     '''expr : INTEGER'''
     p[0] = int(p[1])
+
+
+def p_expr_bool(p):
+    '''expr : WIN
+            | FAIL'''
+    if p[1] == 'WIN':
+        p[0] = True
+    elif p[1] == 'FAIL':
+        p[0] = False
+    else:
+        print('unknown bool value', p[1])
+        p.parser.error = 1
+        return
 
 
 def p_expr_math(p):
@@ -120,8 +150,40 @@ def p_expr_math(p):
     else:
         print('unknown math operator', p[1])
         p.parser.error = 1
+        return
 
     p[0] = (op, [p[3], p[5]])
+
+
+def p_expr_logic(p):
+    '''expr : BOTH OF expr AN expr
+            | EITHER OF expr AN expr
+            | WON OF expr AN expr
+            | NOT expr
+            | ALL OF sep_args MKAY
+            | ANY OF sep_args MKAY'''
+    if p[1] == 'BOTH':
+        op = BOTH
+        p[0] = (op, [p[3], p[5]])
+    elif p[1] == 'EITHER':
+        op = EITHER
+        p[0] = (op, [p[3], p[5]])
+    elif p[1] == 'WON':
+        op = WON
+        p[0] = (op, [p[3], p[5]])
+    elif p[1] == 'NOT':
+        op = NOT
+        p[0] = (op, p[2])
+    elif p[1] == 'ALL':
+        op = ALL
+        p[0] = (op, p[3])
+    elif p[1] == 'ANY':
+        op = ANY
+        p[0] = (op, p[3])
+    else:
+        print('unknown logic operator', p[1])
+        p.parser.error = 1
+        return
 
 
 def p_variable(p):
