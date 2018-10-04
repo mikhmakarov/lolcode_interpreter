@@ -66,7 +66,7 @@ tokens = keywords + (
     'ID', 'NEWLINE', 'ELLIPSIS'
 )
 
-t_ignore = ' \t\n'
+t_ignore = ' \t'
 
 
 t_QUESTION = r'\?'
@@ -90,7 +90,7 @@ def t_oneline_comment(t):
 
 
 def t_multiline_comment(t):
-    r'OBTW(.|\n)*TLDR'
+    r'OBTW(.|\n)*TLDR\n'
     t.lineno += t.value.count('\n')
 
 
