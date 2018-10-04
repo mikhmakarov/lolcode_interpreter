@@ -50,6 +50,19 @@ class LexerTest(unittest.TestCase):
             assert tokens[5].type == 'ID'
             assert tokens[14].type == 'GIMMEH'
 
+    def test_switch(self):
+        with open('programs/switch') as f:
+            prog = f.read()
+            tokens = self.collect_tokens(prog)
+
+            assert len(tokens) == 38
+            assert tokens[13].type == 'O'
+            assert tokens[14].type == 'RLY'
+            assert tokens[15].type == 'QUESTION'
+            assert tokens[16].type == 'YA'
+            assert tokens[17].type == 'RLY'
+            assert tokens[22].type == 'MEBBE'
+
 
 if __name__ == '__main__':
     unittest.main()
