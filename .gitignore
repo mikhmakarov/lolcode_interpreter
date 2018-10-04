@@ -42,3 +42,6 @@ tmtagsHistory
 
 # Virtual environments #
 venv
+
+# PLY
+parser.out
