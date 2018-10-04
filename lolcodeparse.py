@@ -23,6 +23,7 @@ SAME = '<SAME>'
 DIFFRINT = '<DIFFRINT>'
 SMOOSH = '<SMOOSH>'
 MAEK = '<MAEK>'
+CAST = '<CAST>'
 
 
 def p_program(p):
@@ -62,6 +63,18 @@ def p_command_expr(p):
 def p_command_call(p):
     '''command : call'''
     p[0] = p[1]
+
+
+def p_command_cast(p):
+    '''expr : variable IS NOW A type
+            | variable R MAEK variable A type
+            | variable R MAEK variable type'''
+    if p[2] == 'IS':
+        p[0] = (CAST, [p[1], p[5]])
+    elif len(p) == 7:
+        p[0] = (CAST, [p[1], p[6]])
+    else:
+        p[0] = (CAST, [p[1], p[5]])
 
 
 def p_args(p):
