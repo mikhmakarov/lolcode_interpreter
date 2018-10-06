@@ -284,7 +284,8 @@ def p_expr_cast(p):
 
 
 def p_variable(p):
-    '''variable : ID'''
+    '''variable : ID
+                | IT'''
     p[0] = (VAR, p[1])
 
 
