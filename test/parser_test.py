@@ -58,6 +58,18 @@ class ParserTest(unittest.TestCase):
             assert ast[3][1][0][0] == VISIBLE
             assert ast[3][1][1][0] == VISIBLE
 
+    def test_loop(self):
+        with open('programs/loops') as f:
+            prog = f.read()
+            ast = parse(prog)
+
+            assert len(ast) == 1
+            assert ast[0][0] == LOOP
+            assert ast[0][1][0][0] == VAR
+            assert ast[0][1][2][0] == TIL
+            assert ast[0][1][2][1][0] == SAME
+            assert ast[0][1][3][0][0] == VISIBLE
+
 
 if __name__ == '__main__':
     unittest.main()
