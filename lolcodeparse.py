@@ -137,17 +137,17 @@ def p_type(p):
 
 def p_value_string(p):
     '''value : STRING'''
-    p[0] = p[1][1:-1]
+    p[0] = (YARN, p[1][1:-1])
 
 
 def p_value_float(p):
     '''value : FLOAT'''
-    p[0] = float(p[1])
+    p[0] = (NUMBAR, p[1])
 
 
 def p_value_int(p):
     '''value : INTEGER'''
-    p[0] = int(p[1])
+    p[0] = (NUMBR, p[1])
 
 
 def p_value_bool(p):
@@ -274,7 +274,7 @@ def p_expr_cast(p):
 
 def p_variable(p):
     '''variable : ID'''
-    p[0] = p[1]
+    p[0] = (VAR, p[1])
 
 
 def p_program_error(p):
