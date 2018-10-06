@@ -44,18 +44,18 @@ def p_command(p):
 
 
 def p_command_if_else(p):
-    '''if_else : expr NEWLINE O RLY QUESTION NEWLINE YA RLY NEWLINE statements NO WAI NEWLINE statements OIC'''
-    p[0] = (IF_ELSE, p[1], p[10], None, p[14])
+    '''if_else : O RLY QUESTION NEWLINE YA RLY NEWLINE statements NO WAI NEWLINE statements OIC'''
+    p[0] = (IF_ELSE, p[8], None, p[12])
 
 
 def p_command_if_else_short(p):
-    '''if_else : expr NEWLINE O RLY QUESTION NEWLINE YA RLY NEWLINE statements OIC'''
-    p[0] = (IF_ELSE, p[1], p[10], None, None)
+    '''if_else : O RLY QUESTION NEWLINE YA RLY NEWLINE statements OIC'''
+    p[0] = (IF_ELSE, p[8], None, None)
 
 
 def p_command_if_else_extended(p):
-    '''if_else : expr NEWLINE O RLY QUESTION NEWLINE YA RLY NEWLINE statements elifs NO WAI NEWLINE statements OIC'''
-    p[0] = (IF_ELSE, p[1], p[10], p[11], p[15])
+    '''if_else : O RLY QUESTION NEWLINE YA RLY NEWLINE statements elifs NO WAI NEWLINE statements OIC'''
+    p[0] = (IF_ELSE, p[8], p[9], p[13])
 
 
 def p_command_elifs(p):
@@ -281,7 +281,7 @@ def p_program_error(p):
     '''program : error'''
     p[0] = None
     p.parser.error = 1
-    raise Exception('wrong input')
+    raise Exception('wrong input', p[1])
 
 
 # Empty
