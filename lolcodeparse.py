@@ -155,30 +155,23 @@ def p_type(p):
 
 def p_value_string(p):
     '''value : STRING'''
-    p[0] = (YARN, p[1][1:-1])
+    p[0] = (VALUE, (YARN, p[1][1:-1]))
 
 
 def p_value_float(p):
     '''value : FLOAT'''
-    p[0] = (NUMBAR, p[1])
+    p[0] = (VALUE, (NUMBAR, p[1]))
 
 
 def p_value_int(p):
     '''value : INTEGER'''
-    p[0] = (NUMBR, p[1])
+    p[0] = (VALUE, (NUMBR, p[1]))
 
 
 def p_value_bool(p):
     '''value : WIN
              | FAIL'''
-    if p[1] == 'WIN':
-        p[0] = True
-    elif p[1] == 'FAIL':
-        p[0] = False
-    else:
-        print('unknown bool value', p[1])
-        p.parser.error = 1
-        return
+    p[0] = (VALUE, (TROOF, p[1]))
 
 
 def p_call_visible_newline(p):
@@ -195,12 +188,12 @@ def p_call_gimmeh(p):
 
 def p_expr_value(p):
     '''expr : value'''
-    p[0] = p[1]
+    p[0] = (EXPR, p[1])
 
 
 def p_exprt_var(p):
     '''expr : variable'''
-    p[0] = p[1]
+    p[0] = (EXPR, p[1])
 
 
 def p_expr_math(p):
@@ -230,7 +223,7 @@ def p_expr_math(p):
         p.parser.error = 1
         return
 
-    p[0] = (op, [p[3], p[5]])
+    p[0] = (EXPR, (op, [p[3], p[5]]))
 
 
 def p_expr_logic(p):
@@ -244,22 +237,22 @@ def p_expr_logic(p):
             | ANY OF args MKAY'''
     if p[1] == 'BOTH':
         op = BOTH
-        p[0] = (op, [p[3], p[5]])
+        p[0] = (EXPR, (op, [p[3], p[5]]))
     elif p[1] == 'EITHER':
         op = EITHER
-        p[0] = (op, [p[3], p[5]])
+        p[0] = (EXPR, (op, [p[3], p[5]]))
     elif p[1] == 'WON':
         op = WON
-        p[0] = (op, [p[3], p[5]])
+        p[0] = (EXPR, (op, [p[3], p[5]]))
     elif p[1] == 'NOT':
         op = NOT
-        p[0] = (op, p[2])
+        p[0] = (EXPR, (op, p[2]))
     elif p[1] == 'ALL':
         op = ALL
-        p[0] = (op, p[3])
+        p[0] = (EXPR, (op, p[3]))
     elif p[1] == 'ANY':
         op = ANY
-        p[0] = (op, p[3])
+        p[0] = (EXPR, (op, p[3]))
     else:
         print('unknown logic operator', p[1])
         p.parser.error = 1
@@ -270,24 +263,24 @@ def p_expr_comp(p):
     '''expr : BOTH SAEM expr AN expr
             | DIFFRINT expr AN expr'''
     if p[1] == 'BOTH':
-        p[0] = (SAME, [p[3], p[5]])
+        p[0] = (EXPR, (SAME, [p[3], p[5]]))
     else:
-        p[0] = (DIFFRINT, [p[2], p[4]])
+        p[0] = (EXPR, (DIFFRINT, [p[2], p[4]]))
 
 
 def p_expr_concat(p):
     '''expr : SMOOSH sep_args MKAY
             | SMOOSH args MKAY'''
-    p[0] = (SMOOSH, p[2])
+    p[0] = (EXPR, (SMOOSH, p[2]))
 
 
 def p_expr_cast(p):
     '''expr : MAEK expr A type
             | MAEK expr type'''
     if len(p) == 5:
-        p[0] = (MAEK, [p[2], p[4]])
+        p[0] = (EXPR, (MAEK, [p[2], p[4]]))
     else:
-        p[0] = (MAEK, [p[2], p[3]])
+        p[0] = (EXPR, (MAEK, [p[2], p[3]]))
 
 
 def p_variable(p):

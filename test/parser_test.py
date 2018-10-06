@@ -12,7 +12,7 @@ class ParserTest(unittest.TestCase):
 
             assert len(ast) == 1
             assert ast[0][0] == VISIBLE
-            assert ast[0][1] == [(YARN, 'Hai world!')]
+            assert ast[0][1][0][1] == (VALUE, (YARN, 'Hai world!'))
 
     def test_expr(self):
         with open('programs/expr') as f:
@@ -21,15 +21,15 @@ class ParserTest(unittest.TestCase):
 
             assert len(ast) == 3
             assert ast[0][0] == VISIBLE
-            assert ast[0][1][0] == (YARN, 'Hai world!')
-            assert ast[0][1][2][0] == SUM
-            assert ast[0][1][3][0] == BOTH
-            assert ast[0][1][3][1][0] is True
-            assert ast[0][1][3][1][1] is False
-            assert ast[0][1][4][0] == ALL
-            assert ast[1][1][0][0] == SAME
-            assert ast[1][1][1][0] == MAEK
-            assert ast[1][1][1][1][-1] == NUMBR
+            assert ast[0][1][0][1] == (VALUE, (YARN, 'Hai world!'))
+            assert ast[0][1][2][1][0] == SUM
+            assert ast[0][1][3][1][0] == BOTH
+            assert ast[0][1][3][1][1][0][1] == (VALUE, (TROOF, 'WIN'))
+            assert ast[0][1][3][1][1][1][1] == (VALUE, (TROOF, 'FAIL'))
+            assert ast[0][1][4][1][0] == ALL
+            assert ast[1][1][0][1][0] == SAME
+            assert ast[1][1][1][1][0] == MAEK
+            assert ast[1][1][1][1][1][-1] == NUMBR
             assert ast[2][0] == GIMMEH
 
     def test_assignment(self):
@@ -42,7 +42,7 @@ class ParserTest(unittest.TestCase):
             assert ast[0][1][0][0] == VAR
             assert ast[0][1][0][1] == 'x'
             assert ast[0][1][1] is None
-            assert ast[2][1][1][1] == '0'
+            assert ast[2][1][1][1][1] == '0'
             assert ast[6][0] == CAST
             assert ast[6][1][0][0] == VAR
             assert ast[6][1][0][1] == 'y'
@@ -67,7 +67,7 @@ class ParserTest(unittest.TestCase):
             assert ast[0][0] == LOOP
             assert ast[0][1][0][0] == VAR
             assert ast[0][1][2][0] == TIL
-            assert ast[0][1][2][1][0] == SAME
+            assert ast[0][1][2][1][1][0] == SAME
             assert ast[0][1][3][0][0] == VISIBLE
 
 

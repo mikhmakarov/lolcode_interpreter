@@ -43,12 +43,12 @@ class LexerTest(unittest.TestCase):
             prog = f.read()
             tokens = self.collect_tokens(prog)
 
-            assert len(tokens) == 48
+            assert len(tokens) == 50
             assert tokens[3].type == 'I'
             assert tokens[4].type == 'HAS'
             assert tokens[5].type == 'A'
             assert tokens[6].type == 'ID'
-            assert tokens[18].type == 'GIMMEH'
+            assert tokens[20].type == 'GIMMEH'
 
     def test_switch(self):
         with open('programs/switch') as f:
