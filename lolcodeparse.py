@@ -39,7 +39,25 @@ def p_command(p):
                | cast
                | decl
                | assign
-               | if_else'''
+               | if_else
+               | loop'''
+    p[0] = p[1]
+
+
+def p_command_loop(p):
+    '''loop : IM IN YR variable operation YR variable condition expr NEWLINE statements IM OUTTA YR variable'''
+    p[0] = (LOOP, (p[7], p[5], (p[8], p[9]), p[11]))
+
+
+def p_operation(p):
+    '''operation : UPPIN
+                 | NERFIN'''
+    p[0] = p[1]
+
+
+def p_condition(p):
+    '''condition : TIL
+                 | WILE'''
     p[0] = p[1]
 
 
