@@ -35,7 +35,9 @@ class LolCodeInterpreter(object):
         if node_type == VAR:
             return self.expr_res(self.process_variable(value))
         if node_type in [SUM, DIFF, PRODUKT, QUOSHUNT, MOD, BIGGR, SMALLR]:
-            return self.expr_res(self.process_binary(node_type, value))
+            return self.expr_res(self.process_math_expr(node_type, value))
+        if node_type in [BOTH, EITHER, WON, NOT, ALL, ANY]:
+            return self.expr_res(self.process_logic_expr(node_type, value))
 
     def process_value(self, val):
         node_type, value = val
@@ -62,22 +64,46 @@ class LolCodeInterpreter(object):
 
         raise Exception('variable {}: used before declaration'.format(var_name))
 
-    def process_binary(self, op, args):
-        lhs = args[0][1]
-        rhs = args[1][1]
+    def process_math_expr(self, op, args):
+        lhs = self.process_expr(args[0][1])
+        rhs = self.process_expr(args[1][1])
 
         if op == SUM:
-            return self.process_expr(lhs) + self.process_expr(rhs)
+            return lhs + rhs
         if op == DIFF:
-            return self.process_expr(lhs) - self.process_expr(rhs)
+            return lhs - rhs
         if op == PRODUKT:
-            return self.process_expr(lhs) * self.process_expr(rhs)
+            return lhs * rhs
         if op == QUOSHUNT:
-            return self.process_expr(lhs) / self.process_expr(rhs)
+            return lhs / rhs
         if op == MOD:
-            return self.process_expr(lhs) % self.process_expr(rhs)
+            return lhs % rhs
         if op == BIGGR:
-            return max(self.process_expr(lhs), self.process_expr(rhs))
+            return max(lhs, rhs)
         if op == SMALLR:
-            return min(self.process_expr(lhs), self.process_expr(rhs))
+            return min(lhs, rhs)
+
+    def process_logic_expr(self, op, args):
+        if op in [BOTH, EITHER, WON]:
+            lhs = self.process_expr(args[0][1])
+            rhs = self.process_expr(args[1][1])
+
+            if op == BOTH:
+                return lhs and rhs
+            if op == EITHER:
+                return lhs or rhs
+            if op == WON:
+                return bool(lhs) ^ bool(rhs)
+        if op == NOT:
+            lhs = self.process_expr(args[1])
+            return not lhs
+        if op == ALL or op == ANY:
+            exprs = [self.process_expr(arg[1]) for arg in args]
+
+            if op == ALL:
+                return all(exprs)
+            if op == ANY:
+                return any(exprs)
+
+
 
