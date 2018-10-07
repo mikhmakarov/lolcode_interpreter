@@ -11,18 +11,15 @@ class LolCodeInterpreter(object):
 
     def interpret(self, ast):
         self.reset()
-
-        try:
-            # top level is a list of statements
-            self.process_statements(ast)
-        except Exception as e:
-            print('unable to interpret program ', e)
+        self.process_statements(ast)
 
     def process_statements(self, statements):
         for statement in statements:
             node_type, value = statement
             if node_type == EXPR:
                 self.process_expr(value)
+            if node_type == VISIBLE:
+                self.process_visible(value)
 
     def expr_res(self, res):
         self.it = res
@@ -104,6 +101,13 @@ class LolCodeInterpreter(object):
                 return all(exprs)
             if op == ANY:
                 return any(exprs)
+
+    def process_visible(self, args):
+        to_print, new_line = args
+        to_print = ''.join([str(self.process_expr(arg[1])) for arg in to_print])
+
+        print(to_print, end='\n' if new_line else '')
+
 
 
 
