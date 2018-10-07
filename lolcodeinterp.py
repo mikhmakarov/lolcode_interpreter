@@ -39,6 +39,8 @@ class LolCodeInterpreter(object):
             return self.expr_res(self.process_equality(node_type, value))
         if node_type == SMOOSH:
             return self.expr_res(self.process_smoosh(value))
+        if node_type == MAEK:
+            return self.expr_res(self.process_expr_cast(value))
 
     def process_value(self, val):
         node_type, value = val
@@ -121,6 +123,19 @@ class LolCodeInterpreter(object):
     def process_smoosh(self, args):
         str_args = ''.join([str(self.process_expr(arg[1])) for arg in args])
         return str_args
+
+    def process_expr_cast(self, args):
+        lhs = self.process_expr(args[0][1])
+        t = args[1]
+
+        if t == YARN:
+            return str(lhs)
+        if t == NUMBR:
+            return int(lhs)
+        if t == NUMBAR:
+            return float(lhs)
+        if t == TROOF:
+            return bool(lhs)
 
     def process_visible(self, args):
         to_print, new_line = args

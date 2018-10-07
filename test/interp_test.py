@@ -27,7 +27,7 @@ class InterpreterTest(unittest.TestCase):
             with captured_output() as (out, _):
                 inp = LolCodeInterpreter()
                 inp.interpret(ast)
-                assert out.getvalue() == '77lls\nTrueFalse\nFalse\nHELLO'
+                assert out.getvalue() == '77lls\nTrueFalse\nFalse\nHELLO12\n'
 
 
 if __name__ == '__main__':
