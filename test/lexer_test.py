@@ -43,7 +43,7 @@ class LexerTest(unittest.TestCase):
             prog = f.read()
             tokens = self.collect_tokens(prog)
 
-            assert len(tokens) == 50
+            assert len(tokens) == 54
             assert tokens[3].type == 'I'
             assert tokens[4].type == 'HAS'
             assert tokens[5].type == 'A'

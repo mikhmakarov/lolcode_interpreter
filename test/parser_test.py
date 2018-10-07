@@ -37,7 +37,7 @@ class ParserTest(unittest.TestCase):
             prog = f.read()
             ast = parse(prog)
 
-            assert len(ast) == 9
+            assert len(ast) == 10
             assert ast[0][0] == DECLARE
             assert ast[0][1][0][0] == VAR
             assert ast[0][1][0][1] == 'x'

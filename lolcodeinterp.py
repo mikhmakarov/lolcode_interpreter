@@ -20,6 +20,14 @@ class LolCodeInterpreter(object):
                 self.process_expr(value)
             if node_type == VISIBLE:
                 self.process_visible(value)
+            if node_type == GIMMEH:
+                self.process_gimmeh(value)
+            if node_type == ASSIGN:
+                self.process_assign(value)
+            if node_type == DECLARE:
+                self.process_decl(value)
+            if node_type == CAST:
+                self.process_cast(value)
 
     def expr_res(self, res):
         self.it = res
@@ -124,18 +132,21 @@ class LolCodeInterpreter(object):
         str_args = ''.join([str(self.process_expr(arg[1])) for arg in args])
         return str_args
 
+    def totype(self, t, val):
+        if t == YARN:
+            return str(val)
+        if t == NUMBR:
+            return int(val)
+        if t == NUMBAR:
+            return float(val)
+        if t == TROOF:
+            return bool(val)
+
     def process_expr_cast(self, args):
         lhs = self.process_expr(args[0][1])
         t = args[1]
 
-        if t == YARN:
-            return str(lhs)
-        if t == NUMBR:
-            return int(lhs)
-        if t == NUMBAR:
-            return float(lhs)
-        if t == TROOF:
-            return bool(lhs)
+        return self.totype(t, lhs)
 
     def process_visible(self, args):
         to_print, new_line = args
@@ -149,3 +160,25 @@ class LolCodeInterpreter(object):
         self.get_var(var_name)
 
         self.vars[var_name] = input()
+
+    def process_assign(self, args):
+        var_name = args[0][1]
+        value = self.process_expr(args[1][1])
+        # check that variable exists
+        self.get_var(var_name)
+
+        self.vars[var_name] = value
+
+    def process_decl(self, args):
+        var_name = args[0][1]
+        value = None if args[1] is None else self.process_value(args[1][1])
+
+        self.vars[var_name] = value
+
+    def process_cast(self, args):
+        var_name = args[0][1]
+        t = args[1]
+        # check that variable exists
+        self.get_var(var_name)
+
+        self.vars[var_name] = self.totype(t, self.vars[var_name])
