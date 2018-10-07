@@ -35,6 +35,10 @@ class LolCodeInterpreter(object):
             return self.expr_res(self.process_math_expr(node_type, value))
         if node_type in [BOTH, EITHER, WON, NOT, ALL, ANY]:
             return self.expr_res(self.process_logic_expr(node_type, value))
+        if node_type in [SAME, DIFFRINT]:
+            return self.expr_res(self.process_equality(node_type, value))
+        if node_type == SMOOSH:
+            return self.expr_res(self.process_smoosh(value))
 
     def process_value(self, val):
         node_type, value = val
@@ -52,14 +56,17 @@ class LolCodeInterpreter(object):
             else:
                 raise Exception('unknown value for TROOF type')
 
-    def process_variable(self, var_name):
-        if var_name == 'IT':
-            return self.it
-
+    def get_var(self, var_name):
         if var_name in self.vars:
             return self.vars[var_name]
 
         raise Exception('variable {}: used before declaration'.format(var_name))
+
+    def process_variable(self, var_name):
+        if var_name == 'IT':
+            return self.it
+
+        return self.get_var(var_name)
 
     def process_math_expr(self, op, args):
         lhs = self.process_expr(args[0][1])
@@ -102,12 +109,28 @@ class LolCodeInterpreter(object):
             if op == ANY:
                 return any(exprs)
 
+    def process_equality(self, op, args):
+        lhs = self.process_expr(args[0][1])
+        rhs = self.process_expr(args[1][1])
+
+        if op == SAME:
+            return lhs == rhs
+        if op == DIFFRINT:
+            return lhs != rhs
+
+    def process_smoosh(self, args):
+        str_args = ''.join([str(self.process_expr(arg[1])) for arg in args])
+        return str_args
+
     def process_visible(self, args):
         to_print, new_line = args
         to_print = ''.join([str(self.process_expr(arg[1])) for arg in to_print])
 
         print(to_print, end='\n' if new_line else '')
 
+    def process_gimmeh(self, var):
+        var_name = var[1]
+        # check that variable exists
+        self.get_var(var_name)
 
-
-
+        self.vars[var_name] = input()
