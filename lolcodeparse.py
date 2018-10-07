@@ -178,7 +178,7 @@ def p_call_visible_newline(p):
     '''call : VISIBLE args
             | VISIBLE args EXCLAMATION'''
     newline = len(p) == 3
-    p[0] = (VISIBLE, p[2], newline)
+    p[0] = (VISIBLE, (p[2], newline))
 
 
 def p_call_gimmeh(p):
