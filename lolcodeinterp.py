@@ -28,6 +28,8 @@ class LolCodeInterpreter(object):
                 self.process_decl(value)
             if node_type == CAST:
                 self.process_cast(value)
+            if node_type == IF_ELSE:
+                self.process_if_else(value)
 
     def expr_res(self, res):
         self.it = res
@@ -182,3 +184,22 @@ class LolCodeInterpreter(object):
         self.get_var(var_name)
 
         self.vars[var_name] = self.totype(t, self.vars[var_name])
+
+    def process_if_else(self, args):
+        if_true, if_elses, if_false = args
+        processed = False
+
+        if self.it:
+            self.process_statements(if_true)
+            processed = True
+        else:
+            if if_elses is not None:
+                for expr, statements in if_elses:
+                    if self.process_expr(expr[1]):
+                        processed = True
+                        self.process_statements(statements)
+                        break
+
+        if not processed:
+            if if_false is not None:
+                self.process_statements(if_false)

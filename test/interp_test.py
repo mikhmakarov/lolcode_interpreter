@@ -43,6 +43,18 @@ class InterpreterTest(unittest.TestCase):
                 inp.interpret(ast)
                 assert out.getvalue() == 'result is 20\n20\n'
 
+    @patch.object(lolcodeinterp, 'input', create=True)
+    def test_ifelse(self, raw_input):
+        with open('programs/ifelse') as f:
+            prog = f.read()
+            ast = parse(prog)
+            raw_input.return_value = 'mouse'
+
+            with captured_output() as (out, _):
+                inp = LolCodeInterpreter()
+                inp.interpret(ast)
+                assert out.getvalue() == 'Hello mouse\nNice to eat you\n'
+
 
 if __name__ == '__main__':
     unittest.main()
