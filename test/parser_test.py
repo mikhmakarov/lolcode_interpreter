@@ -55,8 +55,8 @@ class ParserTest(unittest.TestCase):
 
             assert len(ast) == 4
             assert ast[3][0] == IF_ELSE
-            assert ast[3][1][0][0] == VISIBLE
-            assert ast[3][1][1][0] == VISIBLE
+            assert ast[3][1][0][0][0] == VISIBLE
+            assert ast[3][1][1][0][1][0][0] == VISIBLE
 
     def test_loop(self):
         with open('programs/loops') as f:

@@ -63,17 +63,17 @@ def p_condition(p):
 
 def p_command_if_else(p):
     '''if_else : O RLY QUESTION NEWLINE YA RLY NEWLINE statements NO WAI NEWLINE statements OIC'''
-    p[0] = (IF_ELSE, p[8], None, p[12])
+    p[0] = (IF_ELSE, [p[8], None, p[12]])
 
 
 def p_command_if_else_short(p):
     '''if_else : O RLY QUESTION NEWLINE YA RLY NEWLINE statements OIC'''
-    p[0] = (IF_ELSE, p[8], None, None)
+    p[0] = (IF_ELSE, [p[8], None, None])
 
 
 def p_command_if_else_extended(p):
     '''if_else : O RLY QUESTION NEWLINE YA RLY NEWLINE statements elifs NO WAI NEWLINE statements OIC'''
-    p[0] = (IF_ELSE, p[8], p[9], p[13])
+    p[0] = (IF_ELSE, [p[8], p[9], p[13]])
 
 
 def p_command_elifs(p):
