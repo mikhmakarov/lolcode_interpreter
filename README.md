@@ -7,6 +7,7 @@
 
 To run a program use:
 
-``$ python lolcodeinterp.py test/programs/hello_world``
-
-``Hai world!``
+```
+$ python lolcodeinterp.py test/programs/hello_world
+Hai world!
+```
