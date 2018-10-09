@@ -30,6 +30,8 @@ class LolCodeInterpreter(object):
                 self.process_cast(value)
             if node_type == IF_ELSE:
                 self.process_if_else(value)
+            if node_type == LOOP:
+                self.process_loop(value)
 
     def expr_res(self, res):
         self.it = res
@@ -203,3 +205,28 @@ class LolCodeInterpreter(object):
         if not processed:
             if if_false is not None:
                 self.process_statements(if_false)
+
+    def process_loop(self, args):
+        old_vars = dict(self.vars)
+        local_var_name = args[0][1]
+        self.vars[local_var_name] = 0
+
+        if args[1] == UPPIN:
+            f = lambda x: x + 1
+        else:
+            f = lambda x: x - 1
+
+        loop_type = args[2][0]
+        cond = args[2][1][1]
+        statements = args[3]
+
+        if loop_type == TIL:
+            stop = lambda x: x
+        else:
+            stop = lambda x: not x
+
+        while not stop(self.process_expr(cond)):
+            self.process_statements(statements)
+            self.vars[local_var_name] = f(self.vars[local_var_name])
+
+        self.vars = old_vars

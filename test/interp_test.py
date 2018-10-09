@@ -55,6 +55,26 @@ class InterpreterTest(unittest.TestCase):
                 inp.interpret(ast)
                 assert out.getvalue() == 'Hello mouse\nNice to eat you\n'
 
+    def test_loops(self):
+        with open('programs/loops') as f:
+            prog = f.read()
+            ast = parse(prog)
+
+            with captured_output() as (out, _):
+                inp = LolCodeInterpreter()
+                inp.interpret(ast)
+                assert out.getvalue() == '0 1 2 3 4 5 6 7 8 9 '
+
+    def test_loops2(self):
+        with open('programs/loops2') as f:
+            prog = f.read()
+            ast = parse(prog)
+
+            with captured_output() as (out, _):
+                inp = LolCodeInterpreter()
+                inp.interpret(ast)
+                assert out.getvalue() == '0 2 4 6 8 '
+
 
 if __name__ == '__main__':
     unittest.main()
