@@ -1,3 +1,5 @@
+from sys import argv
+from lolcodeparse import parse
 from constants import *
 
 
@@ -230,3 +232,12 @@ class LolCodeInterpreter(object):
             self.vars[local_var_name] = f(self.vars[local_var_name])
 
         self.vars = old_vars
+
+
+if __name__ == '__main__':
+    with open(argv[1]) as f:
+        prog = f.read()
+        ast = parse(prog)
+
+        inp = LolCodeInterpreter()
+        inp.interpret(ast)
